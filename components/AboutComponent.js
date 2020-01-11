@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, FlatList } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
-import { PARTNERS } from '../shared/partners';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+//connecting redux stored state to props. Only connecting stored state we need--parnters
+
+const mapStateToProps = state => {
+    return {
+        partners: state.partners
+    };
+}
 
 function Mission() {
         return (
@@ -16,13 +25,6 @@ function Mission() {
 
 class About extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            partners: PARTNERS
-        };
-    }
-
     static navigationOptions = {
         title: 'About Us'
     }
@@ -33,26 +35,25 @@ class About extends Component {
                 <ListItem
                     title={item.name}
                     subtitle={item.description}
-                    leftAvatar={{ source: require('./images/bootstrap-logo.png') }}
+                    leftAvatar={{ source: {uri: baseUrl + item.image}}}
                 />
             );
         };
 
         return (
             <ScrollView>
-                <Mission
-                    item={this.state.partners.filter(partner => partner.featured)[0]} />
+                <Mission />
                 <Card
                     title='Community Partners'>
                         <FlatList
-                            data={this.state.partners}
+                            data={this.props.partners.partners}  //first partner refers to entire state and the second partners refers to the partners data array
                             renderItem={renderPartner}
-                            keyExtractor={item => item.id.toString()}>
-                        </FlatList>
+                            keyExtractor={item => item.id.toString()}
+                        />
                 </Card>
             </ScrollView>
         );
     }
 }
 
-export default About;
+export default connect(mapStateToProps)(About); //this connects the About component to the partners state section we defined in the mapstatetoprops function
