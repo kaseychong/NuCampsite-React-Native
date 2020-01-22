@@ -30,7 +30,7 @@ function RenderCampsite(props) {
     handleViewRef = ref => this.view = ref;
 
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
-    const recognizeComment = ({dx}) => (dx > -200) ? true : false;
+    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
